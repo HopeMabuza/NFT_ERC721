@@ -1225,8 +1225,8 @@ contract NFT is ERC721Enumerable, Ownable {
   string baseURI;
   string public baseExtension = ".json";
   uint256 public cost = 1 ether;
-  uint256 public maxSupply = 8574;
-  uint256 public maxMintAmount = 20;
+  uint256 public maxSupply = 8574;//token cap
+  uint256 public maxMintAmount = 20;//user mint cap
   bool public paused = false;
   bool public revealed = true;
   string public notRevealedUri;
@@ -1241,12 +1241,12 @@ contract NFT is ERC721Enumerable, Ownable {
     setNotRevealedURI(_initNotRevealedUri);
   }
 
-  // internal
+  // internal (returns baseURI)
   function _baseURI() internal view virtual override returns (string memory) {
     return baseURI;
   }
 
-  // public
+  // public (get tokens from NFT)
   function mint(uint256 _mintAmount) public payable {
     uint256 supply = totalSupply();
     require(!paused);
@@ -1263,10 +1263,8 @@ contract NFT is ERC721Enumerable, Ownable {
     }
   }
 
-  function walletOfOwner(address _owner)
-    public
-    view
-    returns (uint256[] memory)
+    // returns the list of tokenIDs for owner
+  function walletOfOwner(address _owner) public view returns (uint256[] memory)
   {
     uint256 ownerTokenCount = balanceOf(_owner);
     uint256[] memory tokenIds = new uint256[](ownerTokenCount);
@@ -1275,13 +1273,9 @@ contract NFT is ERC721Enumerable, Ownable {
     }
     return tokenIds;
   }
-
-  function tokenURI(uint256 tokenId)
-    public
-    view
-    virtual
-    override
-    returns (string memory)
+  
+  //returns the string of tokenURI if it exists and is revealed by owner
+  function tokenURI(uint256 tokenId) public view virtual override returns (string memory)
   {
     require(
       _exists(tokenId),
@@ -1298,35 +1292,42 @@ contract NFT is ERC721Enumerable, Ownable {
         : "";
   }
 
-  //only owner
+  //only owner reveals token info
   function reveal() public onlyOwner {
       revealed = true;
   }
   
+  //only owner sets the cost of the tokens
   function setCost(uint256 _newCost) public onlyOwner {
     cost = _newCost;
   }
 
+  //only owner sets the amount the user can mint
   function setmaxMintAmount(uint256 _newmaxMintAmount) public onlyOwner {
     maxMintAmount = _newmaxMintAmount;
   }
   
+  //only owner sets the tokenURI to not be revealed
   function setNotRevealedURI(string memory _notRevealedURI) public onlyOwner {
     notRevealedUri = _notRevealedURI;
   }
-
+  
+  //only owner sets the tokenURI
   function setBaseURI(string memory _newBaseURI) public onlyOwner {
     baseURI = _newBaseURI;
   }
-
+  
+  //only owner sets the base extension
   function setBaseExtension(string memory _newBaseExtension) public onlyOwner {
     baseExtension = _newBaseExtension;
   }
 
+  //only owner pauses the contract state
   function pause(bool _state) public onlyOwner {
     paused = _state;
   }
  
+  //only owner can withdraw the amount deposited in their account by user
   function withdraw() public payable onlyOwner {
     
     // This will payout the owner 100% of the contract balance.
