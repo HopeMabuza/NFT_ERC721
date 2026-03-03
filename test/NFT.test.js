@@ -69,8 +69,129 @@ describe("NFT", function () {
 
         });
 
-        it("Should revert when buyer2 tries minting over the maximun tokens", async function name(params) {
+        it("Should revert when buyer2 tries minting over the maximun tokens for buyers", async function () {
+            const mintAmount = 21;
+            const tokenCost = mintCost * BigInt(mintAmount);
             
-        })
+            await expect( nft.connect(buyer2).mint(mintAmount, { value: tokenCost })).to.be.reverted;
+
+            
+        });
+
+        it("Should revert when buyer2 tries minting while the state of the contract is paused", async function(){
+            //onwer pauses contract state
+            await nft.connect(owner).pause(true);
+
+            const mintAmount = 5;
+            const tokenCost = mintCost * BigInt(mintAmount);
+
+            await expect( nft.connect(buyer2).mint(mintAmount, { value: tokenCost })).to.be.reverted;
+
+        });
+
+
     });
+
+    describe("Get tokens for any user", function(){
+        it("Should have an empty list if user has not minted", async function(){
+            const tokenList = await nft.walletOfOwner(buyer3.address);
+
+            expect(tokenList.length).to.equal(0);
+        });
+
+        it("Should get 2 tokens when user buys 2 tokens", async function(){
+            const mintAmount = 2;
+            const tokenCost = mintCost * BigInt(mintAmount);
+
+            await nft.connect(buyer2).mint(mintAmount, { value: tokenCost });
+            const tokenList = await nft.walletOfOwner(buyer2.address);
+
+            expect(tokenList.length).to.equal(2);
+            
+        });
+
+        it("Should only show tokens owner by that user", async function(){
+            await nft.connect(buyer1).mint(2 , { value: mintCost * 2n });
+            await nft.connect(buyer2).mint(3 , { value: mintCost * 3n });
+
+            const buyer1TokenList = await nft.walletOfOwner(buyer1.address);
+            const buyer2TokenList = await nft.walletOfOwner(buyer2.address);
+
+            expect(buyer1TokenList.length).to.equal(2);
+            expect(buyer2TokenList.length).to.equal(3);
+        });
+
+        it("Should reflect on the other user when buyer1 transfers tokens", async function(){
+            await nft.connect(buyer1).mint(4 , { value: mintCost * 4n });
+            //use let because we want to reassign the variable later on
+            let buyer1TokenList = await nft.walletOfOwner(buyer1.address);
+
+            expect(buyer1TokenList.length).to.equal(4);
+
+            const tokenID = 1;
+            await nft.connect(buyer1).transferFrom(buyer1.address, buyer2.address,tokenID);
+
+            buyer1TokenList = await nft.walletOfOwner(buyer1.address);
+            const buyer2TokenList = await nft.walletOfOwner(buyer2.address);
+
+            expect(buyer1TokenList.length).to.equal(3);
+            expect(buyer2TokenList.length).to.equal(1);
+        });
+    });
+
+    describe("Set new cost", function(){
+        it("Should successfully change cost if owner calls function", async function(){
+            await nft.setCost(3);
+
+            expect(await nft.cost()).to.equal(3);
+        });
+
+        it("Should revert when non-owner calls function", async function(){
+        
+            await expect(nft.connect(buyer1).setCost(3)).to.be.revertedWith('Ownable: caller is not the owner');
+        });
+    });
+
+    describe("Set new maximumAmount", function(){
+        it("Should successfully change maximumAmount if owner calls function", async function(){
+            await nft.setmaxMintAmount(30);
+
+            expect(await nft.maxMintAmount()).to.equal(30);
+        });
+        it("Should revert when non-owner calls function", async function () {
+
+            await expect(nft.connect(buyer1).setmaxMintAmount(30)).to.be.revertedWith('Ownable: caller is not the owner');
+        });
+    });
+
+    describe("Withdrawal", function(){
+        it("Should revert when non-owner calls function", async function () {
+
+            await expect(nft.connect(buyer1).withdraw()).to.be.revertedWith('Ownable: caller is not the owner');
+        });
+
+        it("Should successfully transfer all funds from contract to owner", async function(){
+            await nft.connect(buyer3).mint(4, {value: mintCost * 4n});
+
+            await nft.withdraw();
+
+            const newContractBalance = await ethers.provider.getBalance(nft.target);
+
+            expect(newContractBalance).to.equal(0);
+        });
+    });
+
+    describe("Set new BaseExtension", function(){
+        it("Should successfully change BaseExtension if owner calls function", async function(){
+            await nft.setBaseExtension(".txt");
+
+            expect(await nft.baseExtension()).to.equal(".txt");
+        });
+        it("Should revert when non-owner calls function", async function () {
+
+            await expect(nft.connect(buyer1).setBaseExtension(".txt")).to.be.revertedWith('Ownable: caller is not the owner');
+        });
+    });
+
+
 });

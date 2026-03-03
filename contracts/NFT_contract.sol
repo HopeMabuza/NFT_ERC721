@@ -1263,7 +1263,7 @@ contract NFT is ERC721Enumerable, Ownable {
     }
   }
 
-    // returns the list of tokenIDs for owner
+    // returns a list of all token IDs owned by a given address
   function walletOfOwner(address _owner) public view returns (uint256[] memory)
   {
     uint256 ownerTokenCount = balanceOf(_owner);

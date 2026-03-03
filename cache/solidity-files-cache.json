@@ -9,7 +9,7 @@
         "version": "0.8.19",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -25,6 +25,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
@@ -61,14 +64,14 @@
       ]
     },
     "/home/wethinkcode_/Documents/Blockchain/NFT_ERC721/contracts/NFT_contract.sol": {
-      "lastModificationDate": 1772458674013,
-      "contentHash": "7952edd098de0abc236822920929bc8f",
+      "lastModificationDate": 1772529282190,
+      "contentHash": "72a0e0d4b9783ea6ff4b25f496f10075",
       "sourceName": "contracts/NFT_contract.sol",
       "solcConfig": {
         "version": "0.8.19",
         "settings": {
           "optimizer": {
-            "enabled": true,
+            "enabled": false,
             "runs": 1000
           },
           "outputSelection": {
@@ -84,6 +87,9 @@
                 "ast"
               ]
             }
+          },
+          "metadata": {
+            "useLiteralContent": false
           }
         }
       },
