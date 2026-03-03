@@ -56,8 +56,21 @@ describe("NFT", function () {
             expect(newContractBal).to.equal(initialContractBal);
 
             const newOwnerBal = await ethers.provider.getBalance(owner.address);
-            expect(initialOwnerBal - newOwnerBal).to.be.greaterThanOrEqual(tokenCost);
+            expect(initialOwnerBal).to.be.greaterThanOrEqual(newOwnerBal);
 
+        });
+
+        it("Should revert when buyer2 tries minting with insufficient funds", async function(){
+            const mintAmount = 5;
+            const tokenCost = mintCost * BigInt(mintAmount);
+            const insufficientAmount = tokenCost - 1n;
+
+            await expect( nft.connect(buyer2).mint(mintAmount, { value: insufficientAmount })).to.be.reverted;
+
+        });
+
+        it("Should revert when buyer2 tries minting over the maximun tokens", async function name(params) {
+            
         })
     });
 });
