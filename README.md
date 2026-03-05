@@ -4,7 +4,7 @@ This repository demonstrates my understanding of **smart contract testing** usin
 
 ## The NFT Contract Overview
 
-The contract under test (`NFT.sol`) implements a typical NFT collection with the following features:
+The contract under test (`NFT_contracts.sol`) implements a typical NFT collection with the following features:
 
 - **ERC721Enumerable** – allows enumeration of tokens owned by an address and total supply.
 - **Ownable** – restricts certain functions to the contract owner.
