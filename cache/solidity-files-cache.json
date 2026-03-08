@@ -1,15 +1,15 @@
 {
   "_format": "hh-sol-cache-2",
   "files": {
-    "/home/wethinkcode_/Documents/Blockchain/NFT_ERC721/contracts/NFT_collection.sol": {
-      "lastModificationDate": 1772456130329,
+    "/home/wtc/Documents/Workshops/NFT_ERC721/contracts/NFT_collection.sol": {
+      "lastModificationDate": 1772914336527,
       "contentHash": "89be282af7d42a79d55c7ebd923ea841",
       "sourceName": "contracts/NFT_collection.sol",
       "solcConfig": {
         "version": "0.8.19",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -25,9 +25,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },
@@ -63,15 +60,15 @@
         "Strings"
       ]
     },
-    "/home/wethinkcode_/Documents/Blockchain/NFT_ERC721/contracts/NFT_contract.sol": {
-      "lastModificationDate": 1772529282190,
+    "/home/wtc/Documents/Workshops/NFT_ERC721/contracts/NFT_contract.sol": {
+      "lastModificationDate": 1772914336527,
       "contentHash": "72a0e0d4b9783ea6ff4b25f496f10075",
       "sourceName": "contracts/NFT_contract.sol",
       "solcConfig": {
         "version": "0.8.19",
         "settings": {
           "optimizer": {
-            "enabled": false,
+            "enabled": true,
             "runs": 1000
           },
           "outputSelection": {
@@ -87,9 +84,6 @@
                 "ast"
               ]
             }
-          },
-          "metadata": {
-            "useLiteralContent": false
           }
         }
       },

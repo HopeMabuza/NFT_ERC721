@@ -193,5 +193,16 @@ describe("NFT", function () {
         });
     });
 
+    describe("Get token URI", function(){
+        it("Should return correct tokenURI", async function(){
+            await nft.connect(buyer1).mint(4, { value: mintCost * 4n });
+            const tokenURI = await nft.tokenURI(1);
+            expect(tokenURI).to.equal("null1.json");
+        });
+
+        it("Should revert when checking URI of not existing token", async function(){
+           await expect(nft.tokenURI(1)).to.be.revertedWith('ERC721Metadata: URI query for nonexistent token');
+        });
+    });
 
 });
